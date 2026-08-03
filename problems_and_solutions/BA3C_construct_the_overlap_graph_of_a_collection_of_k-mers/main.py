@@ -1,0 +1,54 @@
+'''
+In this chapter, we use the terms prefix and suffix to refer to the first k − 1 nucleotides and last k − 1 nucleotides of a k-mer, respectively.
+
+Given an arbitrary collection of k-mers Patterns, we form a graph having a node for each k-mer in Patterns and connect k-mers Pattern and Pattern' by a directed edge if Suffix(Pattern) is equal to Prefix(Pattern'). The resulting graph is called the overlap graph on these k-mers, denoted Overlap(Patterns).
+Overlap Graph Problem
+
+Construct the overlap graph of a collection of k-mers.
+
+Given: A collection Patterns of k-mers.
+
+Return: The overlap graph Overlap(Patterns), in the form of an adjacency list.
+Sample Dataset
+
+ATGCG
+GCATG
+CATGC
+AGGCA
+GGCAT
+
+Sample Output
+
+AGGCA -> GGCAT
+CATGC -> ATGCG
+GCATG -> CATGC
+GGCAT -> GCATG
+'''
+
+FILEPATH = r"BA3C_construct_the_overlap_graph_of_a_collection_of_k-mers\data.txt"
+
+def main():
+    with open(FILEPATH) as file:
+        patterns = file.read().strip().splitlines()
+
+    prefixes = {}
+    for pattern in patterns:
+        prefix = pattern[::-1]
+        if prefix not in prefixes:
+            prefixes[prefix] = []
+        prefixes[prefix].append(pattern)
+    
+    results = {}
+    for pattern in patterns:
+        suffix = pattern[2:]
+        if suffix in prefixes:
+            corresponding = prefixes[suffix]
+            if corresponding:
+                results[pattern] = corresponding
+    
+    for pattern in results:
+        for c in results[pattern]:
+            print(f"{pattern} -> {c}")
+
+if __name__ == "__main__":
+    main()
