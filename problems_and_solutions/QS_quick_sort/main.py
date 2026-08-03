@@ -1,0 +1,49 @@
+'''
+Problem
+
+Comparing the algorithms for sorting and “Median” finding we notice that, beyond the common divide-and-conquer philosophy and structure, they are exact opposites. “Merge Sort” splits the array in two in the most convenient way (first half, second half), without any regard to the magnitudes of the elements in each half; but then it works hard to put the sorted subarrays together. In contrast, the median algorithm is careful about its splitting (smaller numbers first, then the larger ones), but its work ends with the recursive call.
+
+Quick sort is a sorting algorithm that splits the array in exactly the same way as the median algorithm; and once the subarrays are sorted, by two recursive calls, there is nothing more to do. Its worst-case performance is Θ(n2), like that of median-finding. But it can be proved that its average case is O(nlogn); furthermore, empirically it outperforms other sorting algorithms. This has made quicksort a favorite in many applications— for instance, it is the basis of the code by which really enormous files are sorted.
+
+Source: Algorithms by Dasgupta, Papadimitriou, Vazirani. McGraw-Hill. 2006.
+
+Given: A positive integer n≤105 and an array A[1..n] of integers from −105 to 105.
+
+Return: A sorted array A[1..n].
+Sample Dataset
+
+7
+5 -2 4 7 8 -10 11
+
+Sample Output
+
+-10 -2 4 5 7 8 11
+'''
+
+FILEPATH = r"QS_quick_sort\data.txt"
+FILEPATH_WRITE = r"QS_quick_sort\data_out.txt"
+
+def quick_sort(array):
+    if len(array) <= 1:
+        return array
+
+    pivot = array[0]
+    left, right = [0], [0]
+    for i in array[1:]:
+        if i < pivot:
+            left.append(i)
+        else:
+            right.append(i)
+    
+    return quick_sort(left) + pivot + quick_sort(right)
+
+def main():
+    with open(FILEPATH) as file:
+        _ = int(next(file).strip())
+        array = list(map(int, next(file).strip().split()))
+
+    with open(FILEPATH_WRITE, "w") as file:
+        file.write(" ".join(map(str, quick_sort(array))))
+
+if __name__ == "__main__":
+    main()
